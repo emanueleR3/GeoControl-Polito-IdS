@@ -1,0 +1,33 @@
+@startuml
+skinparam actorStyle awesome
+
+
+actor "Viewer" as Viewer
+actor "Operator" as Operator
+actor "Administrator" as Admin
+
+rectangle "User PC" {
+    rectangle "Web App" as WebApp
+}
+
+rectangle "Server" {
+  rectangle "Backend\n(API + JWT auth)" as Backend
+  rectangle "ORM layer" { 
+  database "SQLite DB" as DB
+  }
+}
+
+rectangle "Sensors" as Sensors
+rectangle "Gateway" as Gateway
+
+Viewer --> WebApp : consult data
+Operator --> WebApp : manage networks,\n gateways and sensor
+Admin --> WebApp : manage users
+
+WebApp --> Backend : REST API + JWT
+Backend --> DB : CRUD operations
+
+Sensors --> Gateway : measurements \n via cable
+Gateway --> Backend : REST API over Wi-Fi
+
+@enduml

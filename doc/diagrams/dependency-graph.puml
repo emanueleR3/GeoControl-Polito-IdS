@@ -1,0 +1,95 @@
+@startuml Dependency Graph - GeoControl System (Simplified)
+
+!theme plain
+skinparam backgroundColor white
+skinparam componentStyle rectangle
+
+!define WEBAPP_COLOR lightgreen
+!define CONTROLLER_COLOR lightcyan
+!define SERVICE_COLOR lightyellow
+!define REPOSITORY_COLOR lightpink
+!define MODEL_COLOR lightgray
+
+' Main Application Layer
+component "app.ts" as app <<Express App>> #WEBAPP_COLOR
+
+' Controllers Layer
+package "controllers" {
+    component "userController" <<Controller>> #CONTROLLER_COLOR
+    component "networkController" <<Controller>> #CONTROLLER_COLOR
+    component "gatewayController" <<Controller>> #CONTROLLER_COLOR
+    component "sensorController" <<Controller>> #CONTROLLER_COLOR
+    component "measurementController" <<Controller>> #CONTROLLER_COLOR
+}
+
+' Services Layer
+package "services" {
+    component "mapperService" <<Service>> #SERVICE_COLOR
+    component "measurementService" <<Service>> #SERVICE_COLOR
+}
+
+' Repository Layer
+package "repositories" {
+    component "UserRepository" <<Repository>> #REPOSITORY_COLOR
+    component "NetworkRepository" <<Repository>> #REPOSITORY_COLOR
+    component "GatewayRepository" <<Repository>> #REPOSITORY_COLOR
+    component "SensorRepository" <<Repository>> #REPOSITORY_COLOR
+    component "MeasurementRepository" <<Repository>> #REPOSITORY_COLOR
+}
+
+' Database Entities (DAO)
+package "models/dao" {
+    component "UserDAO" <<Entity>> #MODEL_COLOR
+    component "NetworkDAO" <<Entity>> #MODEL_COLOR
+    component "GatewayDAO" <<Entity>> #MODEL_COLOR
+    component "SensorDAO" <<Entity>> #MODEL_COLOR
+    component "MeasurementDAO" <<Entity>> #MODEL_COLOR
+}
+
+' Main Application Flow
+app --> userController
+app --> networkController
+app --> gatewayController
+app --> sensorController
+app --> measurementController
+
+' Controllers to Services
+userController -right--> mapperService
+networkController -right--> mapperService
+gatewayController -right--> mapperService
+sensorController -right--> mapperService
+measurementController -right--> measurementService
+measurementController -right--> mapperService
+
+' Controllers to Repositories
+userController -down--> UserRepository
+networkController -down--> NetworkRepository
+gatewayController -down-> GatewayRepository
+gatewayController -down--> NetworkRepository
+sensorController -down-> SensorRepository
+sensorController -down--> GatewayRepository
+measurementController -down-> MeasurementRepository
+measurementController -down-> NetworkRepository
+
+' Services dependencies
+measurementService --> mapperService
+
+' Repositories manage DAOs
+UserRepository --> UserDAO
+NetworkRepository --> NetworkDAO
+GatewayRepository --> GatewayDAO
+SensorRepository --> SensorDAO
+MeasurementRepository --> MeasurementDAO
+
+' Entity Relationships
+NetworkDAO "1" -right-> "0..*" GatewayDAO
+GatewayDAO "1" -right-> "0..*" SensorDAO
+SensorDAO "1" -right-> "0..*" MeasurementDAO
+GatewayDAO "1" -right-> "0..*" MeasurementDAO
+
+' Notes for clarity
+note left of app : "Express application with routes"
+note top of measurementService : "Handles statistics and\noutlier detection"
+note bottom of mapperService : "Converts DAO ↔ DTO"
+
+@enduml

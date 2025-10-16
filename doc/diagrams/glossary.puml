@@ -1,0 +1,101 @@
+@startuml
+title GeoControl System - Glossary Class Diagram
+
+class Network {
+  - code: string
+  - name: string
+  - description: string
+}
+note right of Network
+  A logical grouping of gateways, representing
+  a monitoring structure (e.g., municipality).
+end note
+
+class Gateway {
+  - macAddress: string
+  - name: string
+  - description: string
+}
+note right of Gateway
+  A physical device receiving data from sensors
+  and forwarding it to the system.
+end note
+
+class Sensor {
+  - macAddress: string
+  - name: string
+  - description: string
+  - variable: string
+  - unit: string
+}
+note right of Sensor
+  A physical device measuring environmental
+  quantities like temperature, inclination, etc.
+end note
+
+class Measurement {
+  - createdAt: datetime
+  - value: float
+  - isOutlier: boolean
+}
+note right of Measurement
+  A single data point recorded by a sensor,
+  including timestamp and value.
+end note
+
+class Stats {
+  - startDate: datetime
+  - endDate: datetime
+  - mean: float
+  - variance: float
+  - upperThreshold: float
+  - lowerThreshold: float
+}
+note right of Stats
+  Statistical analysis of measurements within
+  a given time window.
+end note
+
+class User {
+  - username: string
+  - password: string
+  - type: UserType
+}
+note right of User
+  An account used to access the system.
+  Rights depend on the associated role.
+end note
+
+enum UserType {
+  admin
+  operator
+  viewer
+}
+note right of UserType
+  Enum defining the user roles and access levels.
+end note
+
+class Token {
+  - token: string
+}
+note right of Token
+  Authentication token (JWT) returned after login.
+end note
+
+class ErrorDTO {
+  - code: int
+  - name: string
+  - message: string
+}
+note right of ErrorDTO
+  Standardized error response for failed API calls.
+end note
+
+Network "1" -- "0..*" Gateway
+Gateway "1" -- "0..*" Sensor
+Sensor "1" -- "0..*" Measurement
+Sensor "1" -- "0..*" Stats
+
+User "1" -- "1" UserType
+
+@enduml

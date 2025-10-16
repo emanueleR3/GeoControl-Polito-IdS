@@ -1,0 +1,94 @@
+@startuml Use case diagram
+title Use Cases Diagram
+left to right direction
+' Add spacing parameters
+skinparam packagePadding 10
+skinparam nodesep 20
+skinparam ranksep 20
+skinparam actorStyle awesome
+actor Admin
+actor Operator
+actor Viewer
+
+Admin --|> Operator
+Operator --|> Viewer
+
+package "Authentication" {
+  (Login)
+  (Logout)
+}
+
+package "User Management" {
+  (Retrieve all users)
+  (Create a new user)
+  (Retrieve a specific user)
+  (Delete a user)
+}
+
+package "Network Management" {
+  (Create a new network)
+  (Update a network)
+  (Delete a network)
+  (Retrieve all networks)
+  (Retrieve a specific network)
+}
+
+package "Gateway Management" {
+  (Create a new gateway)
+  (Update a gateway)
+  (Delete a gateway)
+  (Retrieve all gateways)
+  (Retrieve a specific gateway)
+}
+
+package "Sensor Management" {
+  (Create a new sensor)
+  (Update a sensor)
+  (Delete a sensor)
+  (Retrieve all sensors)
+  (Retrieve a specific sensor)
+}
+
+(Store measurements)
+
+package "Data Presentation" {
+  (Retrieve measurements)
+  (Retrieve statistics)
+  (Retrieve outliers)
+}
+
+' Group connections by package for Viewer
+Viewer -> (Login)
+Viewer -> (Logout)
+Viewer ---> (Consult data)
+(Retrieve all networks) <--- (Consult data)
+(Retrieve a specific network)  <--- (Consult data)
+(Retrieve all gateways)  <--- (Consult data)
+(Retrieve a specific gateway)  <--- (Consult data)
+(Retrieve all sensors)  <--- (Consult data)
+(Retrieve a specific sensor)  <--- (Consult data)
+(Retrieve measurements)  <--- (Consult data)
+(Retrieve statistics)  <--- (Consult data)
+(Retrieve outliers)   <--- (Consult data)
+
+
+
+' Operator functionality
+Operator --> (Create a new network)
+Operator --> (Update a network)
+Operator --> (Delete a network)
+Operator --> (Create a new gateway)
+Operator --> (Update a gateway)
+Operator --> (Delete a gateway)
+Operator --> (Create a new sensor)
+Operator --> (Update a sensor)
+Operator --> (Delete a sensor)
+Operator --> (Store measurements)
+
+' Admin functionality
+(Retrieve all users) <-- Admin
+(Create a new user) <-- Admin
+(Retrieve a specific user) <-- Admin
+(Delete a user) <-- Admin
+
+@enduml

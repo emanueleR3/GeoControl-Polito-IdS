@@ -1,0 +1,21 @@
+@startuml Deployment diagram
+title Deployment diagram
+left to right direction
+
+skinparam packagePadding 10
+skinparam nodesep 20
+skinparam ranksep 20
+skinparam actorStyle awesome
+
+node "Server Geocontrol" as SG {
+  artifact "Geocontrol Backend" as GB
+}
+
+node "User PC" as UP {
+  artifact "Geocontrol Frontend" as GF
+}
+
+SG -- UP : internet connection
+GB -- GF : API calls
+
+@enduml

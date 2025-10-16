@@ -1,0 +1,20 @@
+@startuml context-diagram 
+skinparam actorStyle awesome
+actor Admin
+actor Operator
+actor Viewer
+actor Gateway
+node GeoControl
+
+together{
+  Admin --> GeoControl
+  Operator --> GeoControl
+  Viewer --> GeoControl
+}
+
+together{
+  GeoControl <-- Gateway
+}
+
+@enduml
+

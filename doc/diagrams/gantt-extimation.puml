@@ -1,0 +1,14 @@
+@startgantt
+Project starts the 24th of March 2025
+saturday are closed
+sunday are closed
+
+[Project management]  lasts 12 weeks
+[Requirements engineering] lasts 4 weeks
+[Architectural design] starts after [Requirements engineering]'s end and lasts 1 week
+[Implementation] starts after [Architectural design]'s end and lasts 4 weeks
+[Testing (unit + api)] starts after [Implementation]'s end and lasts 2 weeks
+[CI/CD] starts 1 week after [Implementation]'s end and lasts 2 weeks
+[Documentation] starts after [CI/CD]'s end and lasts 7 days
+@endgantt
+
